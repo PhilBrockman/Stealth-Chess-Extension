@@ -8,4 +8,3 @@
  *
  */
 import('@pages/content/injected/toggleTheme');
-import('@pages/content/injected/hidePieces');

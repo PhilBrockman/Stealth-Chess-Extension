@@ -8,7 +8,9 @@ refreshOnUpdate('pages/content');
 const root = document.createElement('div');
 root.id = 'chrome-extension-boilerplate-react-vite-content-view-root';
 
-document.body.append(root);
+// document.body.append(root);
+
+document.getElementsByClassName('toolbar-menu-area-right')[0].append(root);
 
 const rootIntoShadow = document.createElement('div');
 rootIntoShadow.id = 'shadow-root';
