@@ -18,7 +18,7 @@ export default function App() {
       observerRef.current?.disconnect();
       showPieces();
     }
-  }, [isHidden]);
+  }, [isHidden, enabledOnPath]);
 
   return null;
 }

@@ -21,7 +21,7 @@ const defaultRoutePreferences: RouteHidePreferences = {
   [Location.playComputer]: true,
   [Location.dailyGame]: false,
   [Location.ratedPuzzles]: false,
-  [Location.liveAnalysis]: false,
+  [Location.liveAnalysis]: true,
 };
 
 // Create the storage for route preferences
