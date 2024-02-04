@@ -26,7 +26,6 @@
     - [Chakra UI](#chakra-ui)
 - [Pages](#pages)
 - [Screenshots](#screenshots)
-    - [NewTab](#newtab)
     - [Popup](#popup)
     - [Devtools](#devtools)
 - [Examples](#examples)
@@ -357,10 +356,6 @@ createRoot(rootIntoShadow).render(
 
 ## Pages <a name="pages"></a>
 
-### New Tab <a name="newtab"></a>
-
-[Override Chrome pages](https://developer.chrome.com/docs/extensions/mv3/override/)<br/>`chrome_url_overrides.newtab` in
-manifest.json
 
 ### Popup <a name="popup"></a>
 
@@ -392,9 +387,6 @@ manifest.json
 
 ## Screenshots <a name="screenshots"></a>
 
-### New Tab <a name="newtab"></a>
-
-<img width="800" alt="newtab" src="https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite/assets/53500778/3e782e41-b605-4956-90e2-20cc48252820">
 
 ### Popup <a name="popup"></a>
 
