@@ -8,7 +8,7 @@ const Popup = () => {
   const isHidden = useStorage(enabledBehaviorStorage);
   return (
     <>
-      <button onClick={() => enabledBehaviorStorage.toggle()}>{isHidden === 'enabled' ? 'Hide' : 'Show'} Pieces</button>
+      <button onClick={() => enabledBehaviorStorage.toggle()}>{isHidden === 'enabled' ? 'Show' : 'Hide'} Pieces</button>
     </>
   );
 };

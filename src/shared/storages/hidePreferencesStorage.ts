@@ -1,9 +1,7 @@
 import { BaseStorage, createStorage, StorageType } from '@src/shared/storages/base';
 
 // Define a type for the storage structure that holds the hiding behavior for each route
-type RouteHidePreferences = {
-  [key: string]: boolean;
-};
+type RouteHidePreferences = Record<Location, boolean>;
 
 // Extend the BaseStorage to include methods for managing route preferences
 type HidePreferencesStorage = BaseStorage<RouteHidePreferences> & {
@@ -11,12 +9,19 @@ type HidePreferencesStorage = BaseStorage<RouteHidePreferences> & {
   toggleRouteHideBehavior: (route: string) => Promise<void>;
 };
 
+export enum Location {
+  playComputer = 'play/computer',
+  dailyGame = 'game/daily',
+  ratedPuzzles = 'puzzles/rated',
+  liveAnalysis = 'analysis/game/live',
+}
+
 // Create a default state for the routes
 const defaultRoutePreferences: RouteHidePreferences = {
-  'play/computer': true,
-  'game/daily': true,
-  'puzzles/rated': false,
-  'analysis/game/live': true,
+  [Location.playComputer]: true,
+  [Location.dailyGame]: false,
+  [Location.ratedPuzzles]: false,
+  [Location.liveAnalysis]: false,
 };
 
 // Create the storage for route preferences
