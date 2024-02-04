@@ -70,7 +70,7 @@ export function hidePieces() {
   function runScriptIfElementPresent() {
     const chessBoard = document.querySelector('wc-chess-board');
     if (chessBoard) {
-      initialStealth(); // Run the stealth function if the chess board is present
+      setTimeout(initialStealth, 500); // Run the stealth function if the chess board is present
       observer.disconnect(); // Stop observing once the element is found and the script is run
     }
   }

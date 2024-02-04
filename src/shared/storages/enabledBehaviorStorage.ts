@@ -14,7 +14,7 @@ const storage = createStorage<HideBehavior>('theme-storage-key', HideBehavior.en
   liveUpdate: true,
 });
 
-const exampleThemeStorage: ThemeStorage = {
+const enabledBehaviorStorage: ThemeStorage = {
   ...storage,
   // TODO: extends your own methods
   toggle: async () => {
@@ -24,4 +24,4 @@ const exampleThemeStorage: ThemeStorage = {
   },
 };
 
-export default exampleThemeStorage;
+export default enabledBehaviorStorage;
