@@ -217,14 +217,34 @@ const Popup = () => {
   const isLight = theme === 'light';
   const logo = isLight ? 'popup/logo_vertical.svg' : 'popup/logo_vertical_dark.svg';
 
+  const [updateCount, setUpdateCount] = useState(0);
+  const [bookmarklets, setBookmarklets] = useState([]);
+
+  useEffect(() => {
+    const handleBookmarkletsUpdated = event => {
+      setUpdateCount(prevCount => prevCount + 1);
+      setBookmarklets(event.data); // Update the bookmarklets with the received data
+    };
+
+    // Listen for the custom event
+    window.addEventListener('bookmogrifyBookmarkletsUpdated', handleBookmarkletsUpdated);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('bookmogrifyBookmarkletsUpdated', handleBookmarkletsUpdated);
+    };
+  }, []);
+
   return (
     <div className={`App ${isLight ? 'bg-slate-50' : 'bg-gray-800'} p-4`}>
       <header className={`App-header ${isLight ? 'text-gray-900' : 'text-gray-100'}`}>
         <img src={chrome.runtime.getURL(logo)} className="App-logo w-32 mb-4" alt="logo" />
         <h1 className="text-2xl font-bold mb-4">Bookmark Manager</h1>
+        <p>Update Count: {updateCount}</p>
+        <p>Bookmarklets: {JSON.stringify(bookmarklets)}</p> {/* Display the bookmarklets */}
         <ToggleButton>Toggle theme</ToggleButton>
       </header>
-      <BookmarkList />
+      <BookmarkList bookmarklets={bookmarklets} />
     </div>
   );
 };
