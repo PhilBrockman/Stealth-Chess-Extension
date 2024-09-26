@@ -28,7 +28,7 @@ const manifest = deepmerge(
     version: packageJson.version,
     description: '__MSG_extensionDescription__',
     host_permissions: ['<all_urls>'],
-    permissions: ['storage', 'scripting', 'tabs', 'notifications'],
+    permissions: ['storage', 'scripting', 'tabs', 'notifications', 'bookmarks'],
     options_page: 'options/index.html',
     background: {
       service_worker: 'background.iife.js',
@@ -37,9 +37,6 @@ const manifest = deepmerge(
     action: {
       default_popup: 'popup/index.html',
       default_icon: 'icon-34.png',
-    },
-    chrome_url_overrides: {
-      newtab: 'new-tab/index.html',
     },
     icons: {
       128: 'icon-128.png',
