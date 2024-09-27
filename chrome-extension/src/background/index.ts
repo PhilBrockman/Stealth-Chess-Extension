@@ -7,7 +7,7 @@ const bookmarkletDataSchema = z.object({
     z.object({
       id: z.string().uuid(),
       name: z.string(),
-      url: z.string(),
+      code: z.string(),
     }),
   ),
   version: z.string(),
@@ -15,7 +15,7 @@ const bookmarkletDataSchema = z.object({
 
 console.log("Edit 'chrome-extension/src/background/index.ts' and save to reload.");
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(message => {
   if (message.type === 'BOOKMARKLETS_UPDATED') {
     console.log('Bookmarklets updated event received from content script');
     console.log('message', { message });
@@ -39,7 +39,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 const SENTINEL = 'BOOKMARKLET_SYNC_ID:';
 const featureFlagSyncEnabled = false; // Feature flag for enabling destructive sync actions
 
-async function syncBookmarks(bookmarklets: Array<{ id: string; name: string; url: string }>) {
+async function syncBookmarks(bookmarklets: Array<{ id: string; name: string; code: string }>) {
   const bookmarksBarId = '1'; // The ID of the bookmarks bar folder
   const existingBookmarks = await chrome.bookmarks.getChildren(bookmarksBarId);
 
@@ -51,36 +51,44 @@ async function syncBookmarks(bookmarklets: Array<{ id: string; name: string; url
         const matchingBookmarklet = bookmarklets.find(b => b.id === uuid);
 
         if (matchingBookmarklet) {
-          if (featureFlagSyncEnabled) {
-            // Update existing bookmark if name or URL has changed
-            if (
-              existingBookmark.title !== matchingBookmarklet.name ||
-              existingBookmark.url !== matchingBookmarklet.url
-            ) {
+          if (
+            existingBookmark.title !== matchingBookmarklet.name ||
+            existingBookmark.url !== matchingBookmarklet.code
+          ) {
+            if (featureFlagSyncEnabled) {
               await chrome.bookmarks.update(existingBookmark.id, {
                 title: matchingBookmarklet.name,
-                url: matchingBookmarklet.url,
+                url: matchingBookmarklet.code,
               });
+              console.log(`Updated bookmark: ${existingBookmark.title} -> ${matchingBookmarklet.name}`);
+            } else {
+              console.log(`Would have updated bookmark: ${existingBookmark.title} -> ${matchingBookmarklet.name}`);
             }
           }
-        } else if (featureFlagSyncEnabled) {
-          // Remove bookmark if it's no longer in the synced list
-          await chrome.bookmarks.remove(existingBookmark.id);
+        } else {
+          if (featureFlagSyncEnabled) {
+            await chrome.bookmarks.remove(existingBookmark.id);
+            console.log(`Removed bookmark: ${existingBookmark.title}`);
+          } else {
+            console.log(`Would have removed bookmark: ${existingBookmark.title}`);
+          }
         }
       }
     }
   }
 
-  if (featureFlagSyncEnabled) {
-    // Add new bookmarks
-    for (const bookmarklet of bookmarklets) {
-      const existingBookmark = existingBookmarks.find(b => b.url?.includes(`${SENTINEL}${bookmarklet.id}`));
-      if (!existingBookmark) {
+  for (const bookmarklet of bookmarklets) {
+    const existingBookmark = existingBookmarks.find(b => b.url?.includes(`${SENTINEL}${bookmarklet.id}`));
+    if (!existingBookmark) {
+      if (featureFlagSyncEnabled) {
         await chrome.bookmarks.create({
           parentId: bookmarksBarId,
           title: bookmarklet.name,
-          url: `javascript:${SENTINEL}${bookmarklet.id};${bookmarklet.url}`,
+          url: `javascript:${SENTINEL}${bookmarklet.id};${bookmarklet.code}`,
         });
+        console.log(`Created new bookmark: ${bookmarklet.name}`);
+      } else {
+        console.log(`Would have created new bookmark: ${bookmarklet.name}`);
       }
     }
   }
