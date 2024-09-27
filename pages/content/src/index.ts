@@ -14,10 +14,10 @@ window.addEventListener('bookmogrifyBookmarkletsUpdated', event => {
 
 window.addEventListener('newBookmorgifiedBookmarklet', event => {
   // Send a message to the background script with the event data
-  console.log('creating! ee');
+  console.log('creating! ee', { detail: event.detail });
   chrome.runtime.sendMessage({
-    type: 'CREATE_BOOKMARK',
-    data: event.detail, // Access the detail property for the data
+    type: 'SYNC_SINGLE_BOOKMARK',
+    data: event.detail.data, // Access the detail property for the data
   });
 });
 
