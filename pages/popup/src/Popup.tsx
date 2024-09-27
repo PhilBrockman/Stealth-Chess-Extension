@@ -5,7 +5,7 @@ import type { ComponentPropsWithoutRef } from 'react';
 import { useEffect, useState } from 'react';
 
 interface Bookmark {
-  id?: string; // Make id optional
+  id?: string; // Make iqqd optional
   title: string;
   url?: string;
   path: string[];
@@ -219,21 +219,6 @@ const Popup = () => {
 
   const [updateCount, setUpdateCount] = useState(0);
   const [bookmarklets, setBookmarklets] = useState([]);
-
-  useEffect(() => {
-    const handleBookmarkletsUpdated = event => {
-      setUpdateCount(prevCount => prevCount + 1);
-      setBookmarklets(event.data); // Update the bookmarklets with the received data
-    };
-
-    // Listen for the custom event
-    window.addEventListener('bookmogrifyBookmarkletsUpdated', handleBookmarkletsUpdated);
-
-    // Cleanup the event listener on component unmount
-    return () => {
-      window.removeEventListener('bookmogrifyBookmarkletsUpdated', handleBookmarkletsUpdated);
-    };
-  }, []);
 
   return (
     <div className={`App ${isLight ? 'bg-slate-50' : 'bg-gray-800'} p-4`}>
