@@ -23,3 +23,18 @@ window.addEventListener('newBookmorgifiedBookmarklet', event => {
 
 // Optionally, you can also call toggleTheme or other functions here
 void toggleTheme();
+
+window.addEventListener('checkBookmarkletMapped', event => {
+  console.log('Checking if bookmarklet is mapped', event.detail);
+  chrome.runtime.sendMessage(
+    {
+      type: 'IS_BOOKMARKLET_MAPPED',
+      data: { id: event.detail.bookmarkletId },
+    },
+    response => {
+      console.log('Bookmarklet mapped status:', response.isMapped);
+      // Here you can handle the response, e.g., dispatch a new event with the result
+      window.dispatchEvent(new CustomEvent('bookmarkletMappedResult', { detail: response }));
+    },
+  );
+});
